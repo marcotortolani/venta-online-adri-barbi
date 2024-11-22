@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { ProductCard } from './product-card'
+import { ProductCardSkeleton } from './product-card-skeleton'
 import { ProductTags } from './product-tags'
 import {
   Select,
@@ -14,33 +15,34 @@ import { Product } from '../app/page'
 import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-interface ProductListProps {
-  products: Product[]
-}
+import { getProducts } from '@/lib/getProducts'
 
-export function ProductList({ products }: ProductListProps) {
+export function ProductList() {
+  const [products, setProducts] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
   const [sortBy, setSortBy] = useState('name-asc')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [conditionFilter, setConditionFilter] = useState<
-    'all' | 'new' | 'used'
+    'all' | 'nuevo' | 'usado'
   >('all')
 
   const tags = useMemo(() => {
-    return Array.from(new Set(products.map((product) => product.type)))
+    return Array.from(new Set(products.map((product) => product.category)))
   }, [products])
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = products
 
     if (selectedTags.length > 0) {
-      filtered = filtered.filter((product) =>
-        selectedTags.includes(product.type)
+      filtered = filtered?.filter((product) =>
+        selectedTags.includes(product.category)
       )
     }
 
     if (conditionFilter !== 'all') {
       filtered = filtered.filter(
-        (product) => product.condition === conditionFilter
+        (product) => product?.condition === conditionFilter
       )
     }
 
@@ -60,6 +62,11 @@ export function ProductList({ products }: ProductListProps) {
     })
   }, [products, selectedTags, sortBy, conditionFilter])
 
+  const isFiltersApplied =
+    selectedTags.length > 0 ||
+    sortBy !== 'name-asc' ||
+    conditionFilter !== 'all'
+
   const handleTagClick = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -72,10 +79,13 @@ export function ProductList({ products }: ProductListProps) {
     setConditionFilter('all')
   }
 
-  const isFiltersApplied =
-    selectedTags.length > 0 ||
-    sortBy !== 'name-asc' ||
-    conditionFilter !== 'all'
+  useEffect(() => {
+    getProducts().then((data) => {
+      console.log(data)
+      setProducts(data)
+      setIsLoading(false)
+    })
+  }, [])
 
   return (
     <div className="container mx-auto w-full max-w-screen-xl py-8 px-2">
@@ -99,7 +109,7 @@ export function ProductList({ products }: ProductListProps) {
           </Select>
           <Select
             value={conditionFilter}
-            onValueChange={(value: 'all' | 'new' | 'used') =>
+            onValueChange={(value: 'all' | 'nuevo' | 'usado') =>
               setConditionFilter(value)
             }
           >
@@ -108,8 +118,8 @@ export function ProductList({ products }: ProductListProps) {
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Todos</SelectItem>
-              <SelectItem value="new">Nuevo</SelectItem>
-              <SelectItem value="used">Usado</SelectItem>
+              <SelectItem value="nuevo">Nuevo</SelectItem>
+              <SelectItem value="usado">Usado</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -123,10 +133,19 @@ export function ProductList({ products }: ProductListProps) {
           Limpiar filtros
         </Button>
       </div>
-      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-20">
+      {/* <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-20">
         {filteredAndSortedProducts.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}
+      </div> */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {isLoading
+          ? Array.from({ length: 6 }).map((_, index) => (
+              <ProductCardSkeleton key={index} />
+            ))
+          : filteredAndSortedProducts.map((product) => (
+              <ProductCard key={product.id} {...product} />
+            ))}
       </div>
     </div>
   )
