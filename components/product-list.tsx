@@ -87,7 +87,7 @@ export function ProductList() {
   }, [])
 
   return (
-    <div className="container mx-auto w-full max-w-screen-xl py-8 px-2">
+    <div className="container mx-auto w-full max-w-screen-xl py-8 px-2 md:px-4">
       {tags.length ? (
         <ProductTags
           tags={tags}
@@ -136,10 +136,12 @@ export function ProductList() {
             <Trash2 className="h-4 w-4 mr-2" />
             Limpiar filtros
           </Button>
-          <p className=" text-sm text-nowrap ">({filteredAndSortedProducts.length} Productos)</p>
+          <p className=" text-sm text-nowrap ">
+            ({filteredAndSortedProducts.length} Productos)
+          </p>
         </div>
       </div>
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-10 px-4 md:px-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading
           ? Array.from({ length: 6 }).map((_, index) => (
               <ProductCardSkeleton key={index} />

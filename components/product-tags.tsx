@@ -12,7 +12,7 @@ export function ProductTags({ tags, selectedTags, onTagClick }: ProductTagsProps
       {tags.map((tag) => (
         <Button
           key={tag}
-          variant={selectedTags.includes(tag) ? "secondary" : "outline"}
+          variant={selectedTags.includes(tag) ? "active" : "outline"}
           size="sm"
           onClick={() => onTagClick(tag)}
         >

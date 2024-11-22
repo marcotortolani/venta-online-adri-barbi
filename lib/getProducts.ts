@@ -6,7 +6,7 @@ export async function getProducts(): Promise<Product[]> {
   const response = await fetch(csvUrl)
   const csvData = await response.text()
 
-  const rows = csvData.split('\n').slice(1) // Remover la primera fila (cabecera)  
+  const rows = csvData.split('\n').slice(1) // Remover la primera fila (cabecera)
 
   const products = rows
     .map((row, index) => {
@@ -21,8 +21,9 @@ export async function getProducts(): Promise<Product[]> {
         name: columns[1].trim(),
         price: parseFloat(columns[2].trim()),
         condition: columns[3].trim() as 'nuevo' | 'usado', // Ajustar el tipo si corresponde
-        description: columns[4].trim(),
-        image: columns[5].trim(),
+        state: columns[4].trim() as 'disponible' | 'vendido',
+        description: columns[5].trim(),
+        image: columns[6].trim(),
       }
     })
     .filter((product): product is Product => product !== null) // Tipo específico para eliminar nulos

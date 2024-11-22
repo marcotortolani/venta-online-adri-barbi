@@ -7,6 +7,7 @@ export interface Product {
   name: string
   price: number
   condition: 'nuevo' | 'usado'
+  state: 'disponible' | 'vendido'
   description: string
   image: string
 }
