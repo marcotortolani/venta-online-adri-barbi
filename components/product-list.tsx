@@ -20,7 +20,6 @@ import { getProducts } from '@/lib/getProducts'
 export function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState(true)
-
   const [sortBy, setSortBy] = useState('name-asc')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
   const [conditionFilter, setConditionFilter] = useState<
@@ -89,11 +88,15 @@ export function ProductList() {
 
   return (
     <div className="container mx-auto w-full max-w-screen-xl py-8 px-2">
-      <ProductTags
-        tags={tags}
-        selectedTags={selectedTags}
-        onTagClick={handleTagClick}
-      />
+      {tags.length ? (
+        <ProductTags
+          tags={tags}
+          selectedTags={selectedTags}
+          onTagClick={handleTagClick}
+        />
+      ) : (
+        <div className=" w-full h-10 mb-2 opacity-0 content-normal"></div>
+      )}
       <div className=" w-full flex flex-wrap md:flex-nowrap justify-between items-center mb-4 gap-4">
         <div className=" w-full flex items-center justify-between md:justify-start md:gap-6">
           <Select value={sortBy} onValueChange={setSortBy}>
@@ -123,22 +126,20 @@ export function ProductList() {
             </SelectContent>
           </Select>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={clearFilters}
-          disabled={!isFiltersApplied}
-        >
-          <Trash2 className="h-4 w-4 mr-2" />
-          Limpiar filtros
-        </Button>
+        <div className=" flex items-center md:flex-row-reverse gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={clearFilters}
+            disabled={!isFiltersApplied}
+          >
+            <Trash2 className="h-4 w-4 mr-2" />
+            Limpiar filtros
+          </Button>
+          <p className=" text-sm text-nowrap ">({filteredAndSortedProducts.length} Productos)</p>
+        </div>
       </div>
-      {/* <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-20">
-        {filteredAndSortedProducts.map((product) => (
-          <ProductCard key={product.id} {...product} />
-        ))}
-      </div> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading
           ? Array.from({ length: 6 }).map((_, index) => (
               <ProductCardSkeleton key={index} />
