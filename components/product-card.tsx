@@ -28,7 +28,11 @@ export function ProductCard({
 }: Product) {
   const handleInterest = () => {
     const message = encodeURIComponent(
-      `Hola, me interesa:\n${name}.\nPrecio: $${price}.\nDescripción: ${description}`
+      `Hola, me interesa:\n${name}.\nPrecio: $${price}. ${
+        discount > 0 && `Descuento: ${discount}%`
+      } .\nCuotas: ${payments}x $${price / payments}.${
+        shipping === 'con envio' && '\nCon Mercado Envios.'
+      }\nDescripción: ${description}`
     )
     window.open(`https://wa.me/541164689680?text=${message}`, '_blank')
   }
