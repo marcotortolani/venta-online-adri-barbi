@@ -12,12 +12,12 @@ const technologies = [
 
 export function Footer() {
   return (
-    <footer className="bg-gray-100 mt-12 py-8 px-4">
-      <div className="container mx-auto">
+    <footer className="bg-gray-100 mt-12 py-8 px-4 ">
+      <div className="container mx-auto max-w-screen-xl lg:px-4">
         <div className="flex flex-col md:flex-row justify-between mb-8">
           <div className="mb-6 md:mb-0">
             <p className="text-lg text-gray-700 mb-4 text-center sm:text-left">
-              Desarrollado por{' '}
+              Desarrollado por<br />
               <span className="font-semibold">Marco Tortolani</span>
             </p>
             <div className=" flex justify-center sm:justify-start space-x-4">
@@ -36,13 +36,13 @@ export function Footer() {
               >
                 <Instagram className="w-6 h-6 text-gray-600 hover:text-primary" />
               </Link>
-              <Link
+              {/* <Link
                 href="https://tortolani.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Globe className="w-6 h-6 text-gray-600 hover:text-primary" />
-              </Link>
+              </Link> */}
             </div>
           </div>
           <div>

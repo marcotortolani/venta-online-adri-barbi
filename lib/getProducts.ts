@@ -19,11 +19,14 @@ export async function getProducts(): Promise<Product[]> {
         id: index.toString(),
         category: columns[0].trim(),
         name: columns[1].trim(),
-        price: parseFloat(columns[2].trim()),
-        condition: columns[3].trim() as 'nuevo' | 'usado', // Ajustar el tipo si corresponde
-        state: columns[4].trim() as 'disponible' | 'vendido',
-        description: columns[5].trim(),
-        image: columns[6].trim(),
+        price: parseFloat(columns[2].trim()) || 0,
+        payments: parseInt(columns[3].trim()),
+        discount: parseFloat(columns[4].trim()) || 0,
+        condition: columns[5].trim() as 'nuevo' | 'usado', // Ajustar el tipo si corresponde
+        state: columns[6].trim() as 'disponible' | 'vendido',
+        description: columns[7].trim(),
+        shipping: columns[8].trim() as 'con envio' | 'sin envio',
+        image: columns[9].trim(),
       }
     })
     .filter((product): product is Product => product !== null) // Tipo específico para eliminar nulos
