@@ -272,7 +272,7 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
               <Button
                 onClick={handleShare}
                 variant="outline"
-                className="w-full"
+                className="w-full hover:bg-green-500 transition-all duration-200 ease-in-out "
                 title="Compartir por WhatsApp"
               >
                 <Share2 className="w-4 h-4 mr-2" />
