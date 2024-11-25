@@ -81,7 +81,11 @@ export function ProductCard({
                 Mercado Envíos
               </Badge>
             )}
-            <p className="text-2xl font-bold">
+            <p
+              className={`${
+                payments === 1 && discount > 0 && ' line-through text-neutral-500 font-semibold '
+              } text-2xl font-bold`}
+            >
               {price === 0 ? 'Sin precio' : `$${price.toLocaleString('es-AR')}`}
             </p>
             {payments > 1 && (
