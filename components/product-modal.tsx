@@ -142,16 +142,17 @@ import {
 } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Product } from '../app/page'
-import { Truck } from 'lucide-react'
+import { Share2, Truck } from 'lucide-react'
 
 interface ProductModalProps {
   product: Product
   isOpen: boolean
-  onClose: () => void
+  onClose?: () => void
 }
 
 export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
   const {
+    id,
     name,
     price,
     description,
@@ -168,6 +169,14 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
       `Hola, me interesa:\n${name}.\nPrecio: $${price}.\nDescripción: ${description}`
     )
     window.open(`https://wa.me/541164689680?text=${message}`, '_blank')
+  }
+
+  const handleShare = () => {
+    const shareUrl = `https://venta-online-adri-barbi.vercel.app/${id}`
+    const shareMessage = encodeURIComponent(
+      `Mira este producto: ${name}\n${shareUrl}`
+    )
+    window.open(`https://wa.me/?text=${shareMessage}`, '_blank')
   }
 
   const discountedPrice = price - (price * discount) / 100
@@ -252,14 +261,24 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
 
               <p className="text-gray-700">{description}</p>
             </div>
-
-            <Button
-              onClick={handleInterest}
-              className="w-full hover:bg-sky-800 transition-all duration-200 ease-in-out  "
-              disabled={state === 'vendido'}
-            >
-              Me interesa
-            </Button>
+            <div className=" flex items-center gap-2">
+              <Button
+                onClick={handleInterest}
+                className="w-full hover:bg-sky-800 transition-all duration-200 ease-in-out  "
+                disabled={state === 'vendido'}
+              >
+                Me interesa
+              </Button>
+              <Button
+                onClick={handleShare}
+                variant="outline"
+                className="w-full"
+                title="Compartir por WhatsApp"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Compartir
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
