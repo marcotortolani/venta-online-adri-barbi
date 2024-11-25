@@ -16,9 +16,12 @@ import { Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
 import { getProducts } from '@/lib/getProducts'
+import { ProductModal } from './product-modal'
 
 export function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [sortBy, setSortBy] = useState('name-asc')
   const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -70,6 +73,11 @@ export function ProductList() {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     )
+  }
+
+  const handleCardClick = (product: Product) => {
+    setSelectedProduct(product)
+    setIsModalOpen(true)
   }
 
   const clearFilters = () => {
@@ -147,9 +155,20 @@ export function ProductList() {
               <ProductCardSkeleton key={index} />
             ))
           : filteredAndSortedProducts.map((product) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard
+                key={product.id}
+                {...product}
+                onCardClick={handleCardClick}
+              />
             ))}
       </div>
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   )
 }
