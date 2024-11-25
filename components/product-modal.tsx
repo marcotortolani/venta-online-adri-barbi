@@ -183,8 +183,8 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
   const pricePerPayment = price / payments
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl">
+    <Dialog open={isOpen} onOpenChange={onClose} >
+      <DialogContent className="max-w-5xl h-screen pt-4 overflow-y-scroll">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Left column */}
           <div className="space-y-4">
